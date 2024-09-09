@@ -3,79 +3,59 @@ from langgraph.graph.message import add_messages
 
 # Define the state object for the agent graph
 class AgentGraphState(TypedDict):
-    research_question: str
-    planner_response: Annotated[list, add_messages]
-    selector_response: Annotated[list, add_messages]
-    reporter_response: Annotated[list, add_messages]
-    reviewer_response: Annotated[list, add_messages]
-    router_response: Annotated[list, add_messages]
-    serper_response: Annotated[list, add_messages]
-    scraper_response: Annotated[list, add_messages]
-    final_reports: Annotated[list, add_messages]
+    user_response: Annotated[list, add_messages]
+    questionaire_tool_response: Annotated[list, add_messages]
+    interviewer_response: Annotated[list, add_messages]
+    answer_evaluator_response: Annotated[list, add_messages]
+    guard_rails_response: Annotated[list, add_messages]
     end_chain: Annotated[list, add_messages]
 
 # Define the nodes in the agent graph
 def get_agent_graph_state(state:AgentGraphState, state_key:str):
-    if state_key == "planner_all":
-        return state["planner_response"]
-    elif state_key == "planner_latest":
-        if state["planner_response"]:
-            return state["planner_response"][-1]
+    if state_key == "user_response_all":
+        return state["user_response"]
+    elif state_key == "user_response_latest":
+        if state["user_response"]:
+            return state["user_response"][-1]
         else:
-            return state["planner_response"]
+            return state["user_response"]
+    if state_key == "question_asked_all":
+        return state["questionaire_tool_response"]
+    elif state_key == "question_asked_latest":
+        if state["questionaire_tool_response"]:
+            return state["questionaire_tool_response"][-1]
+        else:
+            return state["questionaire_tool_response"]
+    if state_key == "interviewer_all":
+        return state["interviewer_response"]
+    elif state_key == "interviewer_latest":
+        if state["interviewer_response"]:
+            return state["interviewer_response"][-1]
+        else:
+            return state["interviewer_response"]
     
-    elif state_key == "selector_all":
-        return state["selector_response"]
-    elif state_key == "selector_latest":
-        if state["selector_response"]:
-            return state["selector_response"][-1]
+    elif state_key == "answer_evaluator_all":
+        return state["answer_evaluator_response"]
+    elif state_key == "answer_evaluator_latest":
+        if state["answer_evaluator_response"]:
+            return state["answer_evaluator_response"][-1]
         else:
-            return state["selector_response"]
+            return state["answer_evaluator_response"]
     
-    elif state_key == "reporter_all":
-        return state["reporter_response"]
-    elif state_key == "reporter_latest":
-        if state["reporter_response"]:
-            return state["reporter_response"][-1]
+    elif state_key == "guard_rails_all":
+        return state["guard_rails_response"]
+    elif state_key == "guard_rails_latest":
+        if state["guard_rails_response"]:
+            return state["guard_rails_response"][-1]
         else:
-            return state["reporter_response"]
-    
-    elif state_key == "reviewer_all":
-        return state["reviewer_response"]
-    elif state_key == "reviewer_latest":
-        if state["reviewer_response"]:
-            return state["reviewer_response"][-1]
-        else:
-            return state["reviewer_response"]
-        
-    elif state_key == "serper_all":
-        return state["serper_response"]
-    elif state_key == "serper_latest":
-        if state["serper_response"]:
-            return state["serper_response"][-1]
-        else:
-            return state["serper_response"]
-    
-    elif state_key == "scraper_all":
-        return state["scraper_response"]
-    elif state_key == "scraper_latest":
-        if state["scraper_response"]:
-            return state["scraper_response"][-1]
-        else:
-            return state["scraper_response"]
-        
+            return state["guard_rails_response"]
     else:
         return None
     
 state = {
-    "research_question":"",
-    "planner_response": [],
-    "selector_response": [],
-    "reporter_response": [],
-    "reviewer_response": [],
-    "router_response": [],
-    "serper_response": [],
-    "scraper_response": [],
-    "final_reports": [],
+    "interview_current_question":"",
+    "interviewer_response": [],
+    "answer_evaluator_response": [],
+    "guard_rails_response": [],
     "end_chain": []
 }
