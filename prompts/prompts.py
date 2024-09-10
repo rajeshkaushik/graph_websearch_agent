@@ -35,7 +35,7 @@ interviewer_guided_json = {
 answer_evaluator_prompt_template = """
 You are an advanced AI agent responsible for evaluating the user's response to a given question.
 
-- Question: "{current_question}"
+- Question: "{current_primary_question}"
 
 Instructions:
 1. USER'S RESPONSE MUST FULFILL ALL THESE VALIDATION CRITERIAS TO BE A VALID RESPONSE:

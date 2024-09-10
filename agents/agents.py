@@ -1,6 +1,7 @@
 # import json
 # import yaml
 # import os
+import json
 from termcolor import colored
 from models.openai_models import get_open_ai, get_open_ai_json
 from models.ollama_models import OllamaModel, OllamaJSONModel
@@ -11,7 +12,7 @@ from prompts.prompts import (
     guard_rails_prompt_template
 )
 from utils.helper_functions import get_current_utc_datetime, check_for_content
-from states.state import AgentGraphState
+from states.state import AgentGraphState, get_agent_graph_state
 
 class Agent:
     def __init__(self, state: AgentGraphState, model=None, server=None, temperature=0, model_endpoint=None, stop=None, guided_json=None):
@@ -52,15 +53,19 @@ class InterviewerAgent(Agent):
         return self.state
 
 class AnswerEvaluatorAgent(Agent):
-    def invoke(self, current_question, user_response, prompt=answer_evaluator_prompt_template):
+    def invoke(self, prompt=answer_evaluator_prompt_template):
 
-        current_question = current_question() if callable(current_question) else current_question
-        current_question = check_for_content(current_question)
+        questionaire_tool_response_latest = get_agent_graph_state(self.state, 'questionaire_tool_response_latest')
+        questionaire_tool_response_latest = questionaire_tool_response_latest() if callable(questionaire_tool_response_latest) else questionaire_tool_response_latest
+        questionaire_tool_response_latest = check_for_content(questionaire_tool_response_latest)
+        questionaire_tool_response_latest = json.loads(questionaire_tool_response_latest)
         #import ipdb; ipdb.set_trace()
+        current_primary_question = questionaire_tool_response_latest.get("currentPrimaryQuestion")
+        user_response = get_agent_graph_state(self.state, 'user_response_latest')
         user_response = check_for_content(user_response)
 
         answer_evaluator_prompt = prompt.format(
-            current_question=current_question
+            current_primary_question=current_primary_question
         )
         
         messages = [

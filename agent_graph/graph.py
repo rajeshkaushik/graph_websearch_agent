@@ -47,8 +47,6 @@ def create_graph(server=None, model=None, stop=None, model_endpoint=None, temper
             model_endpoint=model_endpoint,
             temperature=temperature
         ).invoke(
-            current_question=lambda: get_agent_graph_state(state=state, state_key="question_asked_latest"),
-            user_response=state["user_response"][-1],
             prompt=answer_evaluator_prompt_template,
         )
     )

@@ -34,12 +34,12 @@ print ("Graph and workflow created.")
 if __name__ == "__main__":
 
     verbose = False
-    state = AgentGraphState({"questionaire_tool_response":[HumanMessage(content="Thanks for joining us today. Are you ready for the interview?")]})
+    state = AgentGraphState({"questionaire_tool_response":[HumanMessage(content='{"currentPrimaryQuestion": "Thanks for joining us today. Are you ready for the interview?", "followupQuestion": "", "followupCount": 0}')]})
     #print(state)
 
     while True:
-        #giimport ipdb; ipdb.set_trace()
-        print(get_agent_graph_state(state, 'question_asked_latest').content)
+        #import ipdb; ipdb.set_trace()
+        print(get_agent_graph_state(state, 'questionaire_tool_response_latest').content)
         query = input("\nYou: ")
         start = time.time()
         if query.lower() == "exit":

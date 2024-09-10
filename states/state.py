@@ -1,5 +1,6 @@
 from typing import TypedDict, Annotated
 from langgraph.graph.message import add_messages
+import json
 
 # Define the state object for the agent graph
 class AgentGraphState(TypedDict):
@@ -19,9 +20,9 @@ def get_agent_graph_state(state:AgentGraphState, state_key:str):
             return state["user_response"][-1]
         else:
             return state["user_response"]
-    if state_key == "question_asked_all":
+    if state_key == "questionaire_tool_response_all":
         return state["questionaire_tool_response"]
-    elif state_key == "question_asked_latest":
+    elif state_key == "questionaire_tool_response_latest":
         if state["questionaire_tool_response"]:
             return state["questionaire_tool_response"][-1]
         else:
