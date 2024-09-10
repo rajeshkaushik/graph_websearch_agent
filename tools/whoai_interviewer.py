@@ -15,12 +15,13 @@ def get_whoai_mehodology_next_question(state:AgentGraphState):
     valid_response = check_for_content(valid_response)
     valid_response = json.loads(valid_response)
     #import ipdb; ipdb.set_trace()
-    if valid_response.get('valid').lower() == 'true':
-        questionaire_tool_response = {"currentPrimaryQuestion": QUESTIONS_MAPPING_CONFIG.get(previous_primary_question).get('question'), "followupQuestion": valid_response.get('followup_question'), "followupCount": 0}
+    if valid_response.get('valid').lower() == 'true' or questionaire_tool_response_old["followupCount"] >= 2 :
+        questionaire_tool_response = {"currentPrimaryQuestion": QUESTIONS_MAPPING_CONFIG.get(previous_primary_question).get('question'), "followupQuestion": "", "followupCount": 0}
         response = {"questionaire_tool_response": json.dumps(questionaire_tool_response)}
     else:
         questionaire_tool_response = copy.deepcopy(questionaire_tool_response_old)
-        questionaire_tool_response.update({"followupQuestion": valid_response.get('followup_question')})
+        questionaire_tool_response["followupQuestion"] = valid_response.get('followup_question')
+        questionaire_tool_response["followupCount"] = questionaire_tool_response.get("followupCount", 0) + 1
         response = {"questionaire_tool_response": json.dumps(questionaire_tool_response)}
     #print(response)
     return response

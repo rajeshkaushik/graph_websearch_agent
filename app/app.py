@@ -1,6 +1,9 @@
 from pathlib import Path
 import sys
 import time
+import json
+
+from termcolor import colored
 sys.path.append(str(Path(__file__).absolute().parent.parent))
 from agent_graph.graph import create_graph, compile_workflow
 from states.state import AgentGraphState, get_agent_graph_state
@@ -38,8 +41,11 @@ if __name__ == "__main__":
     #print(state)
 
     while True:
-        #import ipdb; ipdb.set_trace()
-        print(get_agent_graph_state(state, 'questionaire_tool_response_latest').content)
+        # import ipdb; ipdb.set_trace()
+        questionaire_tool_response = json.loads(get_agent_graph_state(state, 'questionaire_tool_response_latest').content)
+        print(colored(f"\n{questionaire_tool_response}\n", 'cyan'))
+        next_question = questionaire_tool_response.get('followupQuestion') or questionaire_tool_response.get('currentPrimaryQuestion')
+        print(colored(f"\n{next_question}", "yellow"))
         query = input("\nYou: ")
         start = time.time()
         if query.lower() == "exit":
