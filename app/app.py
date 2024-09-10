@@ -1,5 +1,6 @@
 from pathlib import Path
 import sys
+import time
 sys.path.append(str(Path(__file__).absolute().parent.parent))
 from agent_graph.graph import create_graph, compile_workflow
 from states.state import AgentGraphState, get_agent_graph_state
@@ -40,7 +41,7 @@ if __name__ == "__main__":
         #giimport ipdb; ipdb.set_trace()
         print(get_agent_graph_state(state, 'question_asked_latest').content)
         query = input("\nYou: ")
-        
+        start = time.time()
         if query.lower() == "exit":
             break
         if state.get("user_response"):
@@ -63,5 +64,6 @@ if __name__ == "__main__":
                 print(event)
         '''
         state = workflow.invoke(dict_inputs, limit)
+        print(f' Time Taken: {time.time() - start}') 
         #import ipdb; ipdb.set_trace()
         #print(state)
