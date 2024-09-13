@@ -37,7 +37,7 @@ print ("Graph and workflow created.")
 if __name__ == "__main__":
 
     verbose = False
-    state = AgentGraphState({"questionaire_tool_response":[HumanMessage(content='{"currentPrimaryQuestion": "Thanks for joining us today. Are you ready for the interview?", "followupQuestion": "", "followupCount": 0}')]})
+    state = AgentGraphState({"questionaire_tool_response":[HumanMessage(content='{"currentPrimaryQuestion": "Thanks for joining us today. Are you ready for the interview?", "followupQuestion": "", "followupCount": 0, "min_follow_up": 0, "max_follow_up": 2}')]})
     #print(state)
 
     while True:
